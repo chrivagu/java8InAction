@@ -1,4 +1,4 @@
-package part2FunctionalStyleDataProcessing.lamdaExpressions.constructorReference;
+package part1.cap3_lamdaExpressions.constructorReference;
 
 import java.util.ArrayList;
 import java.util.Arrays;

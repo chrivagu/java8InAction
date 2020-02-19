@@ -1,4 +1,4 @@
-package part2FunctionalStyleDataProcessing.lamdaExpressions.sorting;
+package part1.cap3_lamdaExpressions.sorting;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,23 +9,29 @@ import static java.util.Comparator.comparing;
 class Apple {
     public Integer weight;
     public String color;
+    public String country;
 
     public Integer getWeight() {
         return weight;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public void setWeight(int weight) {
         this.weight = weight;
     }
 
-    public Apple(String color, Integer weight) {
+    public Apple(String color, Integer weight, String country) {
         this.color = color;
         this.weight = weight;
+        this.country = country;
     }
 
     @Override
     public String toString() {
-        return "color:" + color + " " + "weight:" + weight;
+        return "color:" + color + " " + "weight:" + weight + " " + "country:" + country;
     }
 }
 
@@ -38,11 +44,13 @@ class AppleComparator implements Comparator<Apple> {
 
 class Main {
     public static void main(String[] args) {
-        Apple apple1 = new Apple("green", 150);
-        Apple apple2 = new Apple("blue", 50);
-        Apple apple3 = new Apple("red", 100);
-        Apple apple4 = new Apple("black", 75);
-        Apple apple5 = new Apple("white", 80);
+        Apple apple1 = new Apple("green", 150, "peru");
+        Apple apple2 = new Apple("blue", 50, "colombia");
+        Apple apple3 = new Apple("red", 100, "chile");
+        Apple apple4 = new Apple("black", 75, "nicaragua");
+        Apple apple5 = new Apple("white", 80, "ecuador");
+        Apple apple6 = new Apple("white", 80, "brasil");
+
 
         List<Apple> inventory = new ArrayList<>();
         inventory.add(apple1);
@@ -50,6 +58,7 @@ class Main {
         inventory.add(apple3);
         inventory.add(apple4);
         inventory.add(apple5);
+        inventory.add(apple6);
 
         System.out.println("inventory = " + inventory);
 
@@ -78,9 +87,12 @@ class Main {
 
         //De una forma mas concisa
         //inventory.sort(comparing((a) -> a.getWeight()));
-        inventory.sort(comparing(Apple::getWeight));
+        inventory.sort(comparing(Apple::getWeight)
+                .reversed()
+                .thenComparing(Apple::getCountry));
 
-        System.out.println("inventory with comparing = " + inventory);
+        System.out.println("inventory with comparing: ");
+        System.out.println(inventory);
     }
 }
 
