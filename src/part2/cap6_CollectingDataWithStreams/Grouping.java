@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -14,80 +13,35 @@ import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.maxBy;
-import static java.util.stream.Collectors.summarizingInt;
 import static java.util.stream.Collectors.summingInt;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
-class Dish {
-    private final String name;
-    private final boolean vegetarian;
-    private final int calories;
-    private final Type type;
-
-    public Dish(String name, boolean vegetarian, int calories, Type type) {
-        this.name = name;
-        this.vegetarian = vegetarian;
-        this.calories = calories;
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public boolean isVegetarian() {
-        return vegetarian;
-    }
-
-    public int getCalories() {
-        return calories;
-    }
-
-    public Type getType() {
-        return type;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    public enum Type {MEAT, FISH, OTHER}
-
-    public enum CaloricLevel {DIET, NORMAL, FAT}
+class Grouping {
 
     public static void main(String[] args) {
-        List<Dish> menu = Arrays.asList(
-                new Dish("pork", false, 800, Dish.Type.MEAT),
-                new Dish("beef", false, 700, Dish.Type.MEAT),
-                new Dish("chicken", false, 400, Dish.Type.MEAT),
-                new Dish("french fries", true, 530, Dish.Type.OTHER),
-                new Dish("rice", true, 350, Dish.Type.OTHER),
-                new Dish("season fruit", true, 120, Dish.Type.OTHER),
-                new Dish("pizza", true, 550, Dish.Type.OTHER),
-                new Dish("prawns", false, 300, Dish.Type.FISH),
-                new Dish("salmon", false, 450, Dish.Type.FISH));
 
-        Map<CaloricLevel, List<Dish>> dishedByColoriesLevel = menu.stream().collect(
+        List<Dish> menu = Dish.getMenu();
+
+        Map<Dish.CaloricLevel, List<Dish>> dishedByColoriesLevel = menu.stream().collect(
                 groupingBy(s -> {
-                    if (s.getCalories() <= 400) return CaloricLevel.DIET;
-                    else if (s.getCalories() <= 700) return CaloricLevel.NORMAL;
-                    else return CaloricLevel.FAT;
+                    if (s.getCalories() <= 400) return Dish.CaloricLevel.DIET;
+                    else if (s.getCalories() <= 700) return Dish.CaloricLevel.NORMAL;
+                    else return Dish.CaloricLevel.FAT;
                 }, toList()));
         System.out.println("dishedByColoriesLevel = " + dishedByColoriesLevel);
 
-        Map<Dish.Type, Map<CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu
+        Map<Dish.Type, Map<Dish.CaloricLevel, List<Dish>>> dishesByTypeCaloricLevel = menu
                 .stream()
                 .collect(
                         groupingBy(
                                 Dish::getType,
                                 groupingBy(
                                         s -> {
-                                            if (s.getCalories() <= 400) return CaloricLevel.DIET;
-                                            else if (s.getCalories() <= 700) return CaloricLevel.NORMAL;
-                                            else return CaloricLevel.FAT;
+                                            if (s.getCalories() <= 400) return Dish.CaloricLevel.DIET;
+                                            else if (s.getCalories() <= 700) return Dish.CaloricLevel.NORMAL;
+                                            else return Dish.CaloricLevel.FAT;
                                         }
                                         , toList())
                         )
@@ -124,28 +78,28 @@ class Dish {
 
         System.out.println("totalCaloriesByType = " + totalCaloriesByType);
 
-        Map<Dish.Type, Set<CaloricLevel>> caloricLevelByType = menu
+        Map<Dish.Type, Set<Dish.CaloricLevel>> caloricLevelByType = menu
                 .stream()
                 .collect(groupingBy(
                         Dish::getType, mapping(
                                 dish -> {
-                                    if (dish.getCalories() <= 400) return CaloricLevel.DIET;
-                                    else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
-                                    else return CaloricLevel.FAT;
+                                    if (dish.getCalories() <= 400) return Dish.CaloricLevel.DIET;
+                                    else if (dish.getCalories() <= 700) return Dish.CaloricLevel.NORMAL;
+                                    else return Dish.CaloricLevel.FAT;
                                 }, toSet()
                         )
                 ));
 
         System.out.println("caloricLevelByType = " + caloricLevelByType);
 
-        Map<Dish.Type, Set<CaloricLevel>> caloricLevelByType1 = menu
+        Map<Dish.Type, Set<Dish.CaloricLevel>> caloricLevelByType1 = menu
                 .stream()
                 .collect(groupingBy(
                         Dish::getType, mapping(
                                 dish -> {
-                                    if (dish.getCalories() <= 400) return CaloricLevel.DIET;
-                                    else if (dish.getCalories() <= 700) return CaloricLevel.NORMAL;
-                                    else return CaloricLevel.FAT;
+                                    if (dish.getCalories() <= 400) return Dish.CaloricLevel.DIET;
+                                    else if (dish.getCalories() <= 700) return Dish.CaloricLevel.NORMAL;
+                                    else return Dish.CaloricLevel.FAT;
                                 }, toCollection(HashSet::new)
                         )
                 ));
